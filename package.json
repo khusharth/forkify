@@ -1,0 +1,22 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "Recipe app using food2fork API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khusharth/forkify.git"
+  },
+  "author": "Khusharth Patani",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/khusharth/forkify/issues"
+  },
+  "homepage": "https://github.com/khusharth/forkify#readme",
+  "devDependencies": {
+    "webpack": "^4.42.0"
+  }
+}
