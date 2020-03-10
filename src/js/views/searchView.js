@@ -13,6 +13,7 @@ export const clearInput = () => {
 export const clearResults = () => {
     // to delete li elements of previous search
     elements.searchResList.innerHTML = '';
+    elements.searchResPages.innerHTML = '';
 };
 
 const limitRecipeTitle = (title, limit = 17) => {
@@ -57,8 +58,47 @@ const renderRecipe = recipe => {
     `;
     elements.searchResList.insertAdjacentHTML('beforeend', markup);
 };
+// type: 'prev' or 'next' | data-goto to go to a specific page
+const createButton = (page, type) => `
+    <button class="btn-inline results__btn--${type}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
+    <span>Page ${type === 'prev' ? page - 1 : page + 1}</span>
+        <svg class="search__icon">
+            <use href="img/icons.svg#icon-triangle-${type === 'prev' ? 'left' : 'right'}"></use>
+        </svg>
+    </button>
+    `;
 
-export const renderResults = recipes => {
+const renderButtons = (page, numResults, resPerPage) => {
+    const pages = Math.ceil(numResults / resPerPage);
+
+    let button;
+    // pages > 1 as no bunntons for page < 1
+    if (page === 1 && pages > 1) {
+        // Only button to go to next page
+        button = createButton(page, 'next');
+    } else if (page < pages) {
+        // Both buttons
+            button = `
+                ${createButton(page, 'next')}
+                ${createButton(page, 'prev')}
+            `;
+    } else if (page === pages && pages > 1) {
+        // Only button to go to prev page
+        button = createButton(page, 'prev');
+    }
+
+    elements.searchResPages.insertAdjacentHTML('afterbegin', button);  
+
+};
+
+export const renderResults = (recipes, pages = 1, resPerPage = 10) => {
+    // render results of current page
+    const start = (pages - 1) * resPerPage;
+    const end = pages * resPerPage;
+
     // Call render recipe for each recipe
-    recipes.forEach(renderRecipe);
+    recipes.slice(start, end).forEach(renderRecipe);
+
+    // render pagination buttons
+    renderButtons(pages, recipes.length, resPerPage);
 };
