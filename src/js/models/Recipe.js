@@ -34,6 +34,7 @@ export default class Recipe {
         // To change units into a standard / Uniform format 
         const unitsLong = ['tablespoons', 'tablespoon', 'ounces', 'ounce', 'teaspoons', 'teaspoon', 'cups', 'pounds'];
         const unitsShort = ['tbsp', 'tbsp', 'oz', 'oz', 'tsp', 'tsp', 'cup', 'pound'];
+        const units = [...unitsShort, 'kg', 'g']; // ... Used to destructure -> will be replaced with array elements
 
         const newIngredients = this.ingredients.map(el => {
             // 1) Uniform units | converting all to lowercase to reduce cases
@@ -51,7 +52,7 @@ export default class Recipe {
 
             // Way to find the position of the unit whne we dont know what we are looking for
             // Includes returns true or false based on if it found the element
-            const unitIndex = arrIng.findIndex(el2 => unitsShort.includes(el2));
+            const unitIndex = arrIng.findIndex(el2 => units.includes(el2));
 
             let objIng;
             if (unitIndex > -1) {
@@ -62,9 +63,10 @@ export default class Recipe {
 
                 let count;
                 if (arrCount.length === 1) {
-                    count = eval(arrIng[0].replace('-','+'));
+                    // + removes extra 0
+                    count = +eval(arrIng[0].replace('-','+')).toFixed(2);
                 } else {
-                    count = eval(arrIng.slice(0, unitIndex).join('+'));
+                    count = +eval(arrIng.slice(0, unitIndex).join('+')).toFixed(2);
                 }
 
                 objIng = {
