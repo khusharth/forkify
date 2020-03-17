@@ -11,10 +11,11 @@ const formatCount = count => {
         // Count = 2.5 -> 2 1/2
         // count 0.5 -> 1/2
         // Destructuring [int, dec]
-        const [int, dec] = count.toString().split('.').map(el => parseInt(el, 10));
+        const newCount = Math.round(count * 10000) / 10000;
+        const [int, dec] = newCount.toString().split('.').map(el => parseInt(el, 10));
 
         // If no points are there
-        if (!dec) return count;
+        if (!dec) return newCount;
 
         // only fraction 0.5 -> 1/2
         if (int === 0) {
